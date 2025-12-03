@@ -4,7 +4,11 @@
 ## Project Overview
 A real-time messaging platform enabling secure communication between users with role-based access control.
 
-## Access Levels
+## Overview 
+-- private room is created by  starting  room name with "private"
+-- Only two members can access the private room
+-- Public room name can be anything and no restriion for the number of user in it .
+
 
 
 
@@ -12,8 +16,7 @@ A real-time messaging platform enabling secure communication between users with 
 - Send and receive messages
 - Create private chat rooms
 - View conversation history
-- Edit/delete own messages
-- Access user profile settings
+
 
 ## Rules & Guidelines
 
@@ -26,9 +29,5 @@ A real-time messaging platform enabling secure communication between users with 
 ### For Private Channels
 - Owner controls member invitations
 - Messages visible only to members
-- Owner can remove members anytime
 
-### Account Security
-- Strong passwords required
-- Two-factor authentication recommended
-- Session timeout after 30 minutes of inactivity
+
