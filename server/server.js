@@ -14,7 +14,7 @@ connectDB();
 const app = express();
 
 // configure CORS - allow any origin by default, you can lock this to your frontend URL
-app.use(cors({ origin: process.env.CLIENT_URL || '*' }));
+// app.use(cors({ origin: process.env.CLIENT_URL || '*' }));
 app.use(express.json());
 
 const server = http.createServer(app);
