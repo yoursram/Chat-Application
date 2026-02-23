@@ -1,6 +1,5 @@
-const mongoose = require("mongoose");
-require("dotenv").config();
-
+import mongoose from "mongoose"
+// const connectionURL = "mongodb+srv://ram123:ram@1234@chat-application.nwh8goy.mongodb.net/"
 const connectDB = async ()=>{
  try{
     await mongoose.connect(process.env.connectionURL);
