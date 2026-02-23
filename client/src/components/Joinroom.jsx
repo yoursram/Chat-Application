@@ -1,26 +1,26 @@
 import React, { useState } from "react";
 import { socket } from "../socket";
+import "../App.css";
 
-function JoinRoom({ setUsername, setRoom, onJoin }) {
+function JoinRoom({ userEmail, setUsername, setRoom, onJoin, onLogout }) {
   const [name, setName] = useState("");
   const [roomName, setRoomName] = useState("");
   const [error, setError] = useState("");
 
-
   const joinRoom = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (!name || !roomName) {
-      setError("Enter name and room");
+      setError("Please enter both name and room name");
       return;
     }
 
     setUsername(name);
     setRoom(roomName);
-    
+
     socket.emit("join_room", roomName);
 
     socket.on("room_full", () => {
-      setError("Room is full! Only 2 users allowed.");
+      setError("Room is full! Only 2 users allowed in private rooms.");
     });
 
     socket.on("room_joined", () => {
@@ -29,36 +29,59 @@ function JoinRoom({ setUsername, setRoom, onJoin }) {
   };
 
   return (
-    
-    <form  on onSubmit={joinRoom} className="min-h-screen bg-gray-900 flex flex-col items-center justify-center">
-      <h2 className="text-cyan-300 text-xl font-bold mb-4 text-center"  >Join Public or Private Room</h2>
-      <p className="font-bold text-white">If the room is created using the word "private" only 2 users are allowed !!</p>
-      <p className=" mb-1 font-bold text-white">Else: there's no restriction for the pubic room</p>
+    <div className="join-room-container">
+      <div className="join-room-card">
+        <div className="join-room-header">
+          <h2>Join a Chat Room</h2>
+          <button onClick={onLogout} className="logout-btn">
+            Logout
+          </button>
+        </div>
 
-      <input
-        className="w-2xs mb-0.5 p-5 rounded-lg bg-gray-800 text-white outline-none"
-        placeholder="Enter your name"
-        onChange={(e) => setName(e.target.value)}
-      />
+        <p className="subtitle">
+          Join a room and start chatting with others. Use "private_" prefix for
+          2-user rooms.
+        </p>
 
-      <br /><br />
+        <form onSubmit={joinRoom} className="join-room-form">
+          <div className="form-group">
+            <label htmlFor="username">Your Name</label>
+            <input
+              id="username"
+              type="text"
+              placeholder="Enter your name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
 
-      <input
-        className="w-2xs mb-1 p-5 bg-gray-800 text-white rounded-lg outline-none"
-        placeholder="Enter room name (public or private_room)"
-        onChange={(e) => setRoomName(e.target.value)}
-      />
+          <div className="form-group">
+            <label htmlFor="roomname">Room Name</label>
+            <input
+              id="roomname"
+              type="text"
+              placeholder="e.g., general, private_chat"
+              value={roomName}
+              onChange={(e) => setRoomName(e.target.value)}
+            />
+            <small style={{ color: "#999", marginTop: "4px" }}>
+              💡 Tip: Rooms starting with "private_" limit to 2 users. Public
+              rooms have no limit.
+            </small>
+          </div>
 
-      <br /><br />
+          <button type="submit" className="join-btn">
+            Join Room
+          </button>
+        </form>
 
-      <button 
-      className="w-2xs p-4 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg text-lg"
-      type="submit"
-      >Join</button>
+        {error && <p className="error-message">{error}</p>}
 
-      {error && <p className="text-red-600 mt-2 font-bold text-center">{error}</p>}
-     
-    </form>
+        <div className="user-email">
+          👤 Logged in as: <strong>{userEmail}</strong>
+        </div>
+      </div>
+    </div>
   );
 }
 

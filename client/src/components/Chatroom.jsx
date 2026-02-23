@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { socket } from "../socket";
 import MessageList from "./Messagelist";
 import MessageInput from "./Messageinput";
+import "../App.css";
 
-function ChatRoom({ username, room }) {
+function ChatRoom({ username, room, userEmail, onLogout }) {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
@@ -46,15 +47,30 @@ function ChatRoom({ username, room }) {
   };
 
   return (
-    <div className="flex items-center justify-center">
-    <div className=" flex flex-col  w-2xl text-white bg-gray-800 p-15  m-3 rounded-2xl">
-      <h2 className="text-cyan-400 font-bold">Room: {room}</h2>
-      <h4 className="text-cyan-500 font-bold">User: {username}</h4>
+    <div className="chatroom-container">
+      <div className="chatroom-wrapper">
+        {/* Chat Header */}
+        <div className="chat-header">
+          <div className="chat-header-info">
+            <h2 className="chat-header-room">
+              {room.includes("private") ? "🔒 " : "👥 "} {room}
+            </h2>
+            <p className="chat-header-user">{username}</p>
+          </div>
+          <div className="chat-header-actions">
+            <div className="online-status"></div>
+            <button onClick={onLogout} className="chat-logout-btn">
+              Logout
+            </button>
+          </div>
+        </div>
 
-      <MessageList messages={messages} />
+        {/* Messages */}
+        <MessageList messages={messages} username={username} />
 
-      <MessageInput onSend={sendMessage} />
-    </div>
+        {/* Message Input */}
+        <MessageInput onSend={sendMessage} />
+      </div>
     </div>
   );
 }
